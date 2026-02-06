@@ -1,59 +1,234 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Product Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Basic Laravel application for managing products, featuring secure authentication, role-based access control, full CRUD operations, and optimized search capabilities. The application follows modern PHP standards with emphasis on security, performance, and maintainable architecture.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
+- [Installation & Deployment](#-installation--deployment)
+- [Security Implementation](#-security-implementation)
+- [Performance Optimization](#-performance-optimization)
+- [Challenges & Solutions](#-challenges--solutions)
+- [Future Improvements](#-future-improvements)
+- [API Documentation](#-api-documentation)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✨ Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Authenticated Access**: Secure login system.
+- **Product Management**: Create, Read, Update, and Delete products.
+- **Rich Content**: Support for rich text descriptions.
+- **Advanced Search**: Filter products by keyword with optimized database queries.
+- **Role-Based Access Control**: Granular permissions (Admin vs Standard User).
+- **Automated Deployment**: One-click setup using Docker Compose.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Tech Stack
 
-## Laravel Sponsors
+- **Backend**: Laravel 12.x
+- **Database**: MySQL 8.0 / PostgreSQL
+- **Authentication**: Laravel Built-in Auth (Session-based)
+- **ORM**: Eloquent
+- **Deployment**: Docker Compose (Nginx, PHP-FPM, MySQL, Redis)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠 System Architecture
 
-### Premium Partners
+This project follows the **Repository-Service Pattern** to ensure separation of concerns, testability, and maintainability.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. **Service Layer (`App\Services`)**
+   - **Purpose**: Encapsulates business logic.
+   - **Benefit**: Keeps Controllers "thin". The Controller's only job is to receive the request, assign to the Service, and return the response.
 
-## Contributing
+### 2. **Repository Layer (`App\Repositories`)**
+   - **Purpose**: Abstraction layer for data access.
+   - **Benefit**: Decouples the business logic from the specific ORM or database. Makes it easier to switch data sources or mock data for testing.
+   - **Optimization**: All Eloquent queries (e.g., `Product::where(...)`) are contained here.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. **Centralized Validation (`Form Requests`)**
+   - **Strict Validation**: All incoming data is validated using dedicated Form Request classes (e.g., `StoreProductRequest`).
+   - **Security**: Ensures no invalid or malicious data reaches the Service layer.
 
-## Code of Conduct
+### 4. **Role-Based Access Control (RBAC)**
+   - **Implementation**: Simple, database-driven role system without external packages like Spatie.
+   - **Structure**: `users` table contains a `role` column (or relation).
+   - **Enforcement**:
+     - **Gates & Policies**: Used for authorization checks (e.g., `can('create-product')`).
+     - **Middleware**: Routes are protected by role-based middleware.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📁 Project Structure
 
-## Security Vulnerabilities
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/           # Admin-specific controllers
+│   │   ├── Api/            # API controllers
+│   │   └── ProductController.php
+│   ├── Middleware/
+│   │   ├── AdminMiddleware.php
+│   │   └── CheckPermission.php
+│   └── Requests/
+│       ├── ProductRequest.php
+│       └── UpdateProductRequest.php
+├── Models/
+│   ├── User.php
+│   ├── Product.php
+│   └── Role.php
+├── Services/
+│   ├── ProductService.php   # Business logic
+│   └── SearchService.php    # Search optimization
+├── Repositories/
+│   ├── ProductRepository.php # Data access layer
+│   └── Interfaces/
+└── Providers/
+    └── RepositoryServiceProvider.php
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🐳 Installation & Deployment
 
-## License
+The project includes a fully automated `docker-compose` setup.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Prerequisites
+- Docker & Docker Compose
+
+### Quick Start
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd laravel-product-management
+   ```
+
+2. **Run the deployment script**
+   ```bash
+   # Make script executable
+   chmod +x deploy.sh
+
+   # Run deployment
+   ./deploy.sh
+   ```
+   This script will:
+   - Copy `.env.example` to `.env`.
+   - Build and start Docker containers.
+   - Install Composer dependencies.
+   - Generate App Key.
+   - Run Database Migrations.
+   - Set file permissions.
+
+3. **Access the Application**
+   - Web: `http://localhost:8080`
+   - Database: `mysql:3306`
+
+## 🔒 Security Implementation
+
+- **CSRF Protection**: All non-read HTTP requests are protected by Laravel's CSRF tokens.
+- **XSS Prevention**: Blade templating automatically escapes output.
+- **SQL Injection**: Eloquent ORM uses prepared statements by default.
+- **Input Validation**: Strict type checking and validation rules.
+
+## ⚡ Performance Optimization
+
+- **Database Indexing**: Searchable fields like `title` and `date_available` are indexed to ensure fast `WHERE` clauses.
+- **Eager Loading**: Code is audited to prevent N+1 query problems (using `with()`).
+- **Pagination**: All list endpoints use server-side pagination to handle large datasets efficiently.
+- **Optimization Commands**: Deployment script runs `config:cache`, `route:cache`, and `view:cache`.
+
+## 🧩 Challenges & Solutions
+
+### 1. **Handling Soft Deletes in Unique Validations**
+- **Challenge**: Soft-deleted products could cause unique constraint violations if a new product used the same title.
+- **Solution**: Used validaton rules like `Rule::unique('products')->withoutTrashed()` to ensure uniqueness ignores deleted records, or explicitly checked active records.
+
+### 2. **Efficient Search on Large Datasets**
+- **Challenge**: Simple `LIKE %...%` queries can be slow on large tables.
+- **Solution**: Added database indexes on searchable columns (`title`) and implemented query scopes to encapsulate search logic.
+
+### 3. ***Rich Text Editor Security***
+- **Challenge**: Rich text editors can be used to inject malicious content.
+- **Solution**: Implemented a whitelist of allowed HTML tags and attributes using the `HTMLPurifier` library.
+
+## 🔮 Future Improvements
+
+If this were a large-scale SaaS product, I would introduce:
+- **API Versioning**: For mobile/external consumers.
+- **Caching Layer**: aggressive Redis caching for read-heavy product lists.
+- **Elasticsearch/Meilisearch**: For more advanced full-text search capabilities beyond SQL `LIKE`.
+- **Queued Exports**: For handling large data exports asynchronously.
+- **CI/CD Pipeline**: GitHub Actions for automated testing and deployment.
+
+## 📚 API Documentation
+
+### Authentication
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/register` | Register new user |
+| `POST` | `/api/login` | Login user |
+| `POST` | `/api/logout` | Logout user |
+| `POST` | `/api/refresh` | Refresh token |
+
+### Products
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/products` | List all products |
+| `POST` | `/api/products` | Create product (Admin) |
+| `GET` | `/api/products/{id}` | Get single product |
+| `PUT` | `/api/products/{id}` | Update product (Admin) |
+| `DELETE` | `/api/products/{id}` | Delete product (Admin) |
+| `GET` | `/api/products/search?q=` | Search products |
+
+### Admin Endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/admin/users` | List users |
+| `PUT` | `/api/admin/users/{id}` | Update user role |
+| `GET` | `/api/admin/analytics` | Get system analytics |
+
+### 🔐 Authentication
+
+All API endpoints (except login/register) require:
+
+`Authorization: Bearer {jwt_token}`
+
+## 🧪 Testing
+
+### Test Coverage
+
+```bash
+# Run tests
+php artisan test
+
+# Test coverage
+php artisan test --coverage-html coverage/
+
+# Specific test suites
+php artisan test --testsuite=Feature
+php artisan test --testsuite=Unit
+```
+
+### ✅ Test Categories
+
+- **Unit Tests**: Models, Services, Repositories
+- **Feature Tests**: API endpoints, Authentication
+
+## 📝 Code Standards
+
+- Follow **PSR-12** coding standards
+- Write meaningfully commit messages
+- Add tests for new features
+- Update documentation accordingly
+
+---
+
+## 📞 Contact
+
+- **Developer**: Sreeharsh K
+- **Position**: PHP Developer
+- **Email**: sreeharshkrajan@gmail.com
+- **Date**: 2026-02-06
+- **Repository**: https://github.com/sreeharshkrajan/laravel-product-management
