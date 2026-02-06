@@ -1,12 +1,9 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/users', function () {
-    return response([
-        'status' => 'success',
-        'message' => 'User Routes'
-    ]);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });

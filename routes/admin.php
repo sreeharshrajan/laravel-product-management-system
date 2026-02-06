@@ -1,12 +1,9 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/admins', function(){
-    return response([
-        'status' => 'success',
-        'message' => 'Admin Routes'
-    ]);
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 });
