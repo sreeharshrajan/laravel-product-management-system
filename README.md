@@ -28,11 +28,15 @@ Basic Laravel application for managing products, featuring secure authentication
 
 ## 🚀 Tech Stack
 
-- **Backend**: Laravel 12.x
-- **Database**: MySQL 8.0 / PostgreSQL
-- **Authentication**: Laravel Built-in Auth (Session-based)
+- **Framework**: Laravel 12.x
+- **Backend**: Nginx Alpine, PHP-FPM 8.3
+- **Frontend**: HTML, CSS, JavaScript, Tailwind CSS
+- **Database**: MySQL 8.0
+- **Authentication**: Laravel Sanctum (API Authentication)
+- **Testing**: PHPUnit
 - **ORM**: Eloquent
-- **Deployment**: Docker Compose (Nginx, PHP-FPM, MySQL, Redis)
+- **Build Tools**: Composer, Vite
+- **Deployment**: Docker Compose (Nginx Alpine, PHP-FPM 8.3, MySQL 8.0, Redis)
 
 ## 🛠 System Architecture
 
@@ -110,8 +114,8 @@ The project includes a fully automated `docker-compose` setup.
 ### Quick Start
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
-   cd laravel-product-management
+   git clone https://github.com/sreeharshrajan/laravel-product-management-system.git
+   cd laravel-product-management-system
    ```
 
 2. **Run the deployment script**
