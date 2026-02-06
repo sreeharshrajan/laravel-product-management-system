@@ -16,7 +16,6 @@ Basic Laravel application for managing products, featuring secure authentication
 - [Future Improvements](#-future-improvements)
 - [API Documentation](#-api-documentation)
 
----
 
 ## ✨ Features
 
@@ -59,32 +58,45 @@ This project follows the **Repository-Service Pattern** to ensure separation of 
      - **Gates & Policies**: Used for authorization checks (e.g., `can('create-product')`).
      - **Middleware**: Routes are protected by role-based middleware.
 
+### 5. **Universal Unique Identifiers (UUIDs)**
+   - **Implementation**: All primary keys (Users, Products, Roles) use UUIDs instead of standard auto-incrementing integers.
+   - **Benefit**: Enhanced security (preventing ID enumeration) and better support for distributed systems.
+
+## ER Diagram
+
+<img src="er_diagram.png" width="400" alt="ER Diagram">
+
 ## 📁 Project Structure
 
 ```
 app/
 ├── Http/
 │   ├── Controllers/
-│   │   ├── Admin/           # Admin-specific controllers
-│   │   ├── Api/            # API controllers
-│   │   └── ProductController.php
-│   ├── Middleware/
+│   │   ├── Admin/               # Admin-specific controllers
+│   │   │   ├── UserController.php
+│   │   │   └── ProductController.php
+│   │   ├── Api/                 # API controllers
+│   │   │   ├── ProductController.php
+│   │   │   ├── UserController.php
+│   │   │   └── BaseController.php
+│   ├── Middleware/              # Middleware for role-based access control
 │   │   ├── AdminMiddleware.php
 │   │   └── CheckPermission.php
-│   └── Requests/
+│   └── Requests/                # Form requests for validation
 │       ├── ProductRequest.php
 │       └── UpdateProductRequest.php
-├── Models/
+├── Models/                      # Eloquent models
 │   ├── User.php
-│   ├── Product.php
-│   └── Role.php
-├── Services/
-│   ├── ProductService.php   # Business logic
-│   └── SearchService.php    # Search optimization
-├── Repositories/
-│   ├── ProductRepository.php # Data access layer
-│   └── Interfaces/
-└── Providers/
+│   └── Product.php
+├── Services/                    # Business logic
+│   ├── ProductService.php       
+│   └── SearchService.php       
+├── Repositories/                # Data access layer
+│   ├── ProductRepository.php    
+│   └── Interfaces/              # Interface for repository
+│       ├── ProductRepositoryInterface.php
+│       └── UserRepositoryInterface.php
+└── Providers/                   # Service providers
     └── RepositoryServiceProvider.php
 ```
 
@@ -146,7 +158,7 @@ The project includes a fully automated `docker-compose` setup.
 - **Challenge**: Simple `LIKE %...%` queries can be slow on large tables.
 - **Solution**: Added database indexes on searchable columns (`title`) and implemented query scopes to encapsulate search logic.
 
-### 3. ***Rich Text Editor Security***
+### 3. **Rich Text Editor Security**
 - **Challenge**: Rich text editors can be used to inject malicious content.
 - **Solution**: Implemented a whitelist of allowed HTML tags and attributes using the `HTMLPurifier` library.
 
@@ -222,8 +234,6 @@ php artisan test --testsuite=Unit
 - Write meaningfully commit messages
 - Add tests for new features
 - Update documentation accordingly
-
----
 
 ## 📞 Contact
 
