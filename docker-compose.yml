@@ -5,6 +5,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: laravel_app
+    environment:
+      - DB_HOST=mysql
+      - REDIS_HOST=redis
+      - SESSION_DRIVER=redis
+      - CACHE_DRIVER=redis
+      - QUEUE_CONNECTION=redis
     restart: unless-stopped
     working_dir: /var/www
     volumes:
