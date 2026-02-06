@@ -28,11 +28,12 @@ class User extends Authenticatable
      */
     protected $keyType = 'string';
 
-    public static function booted() {
-    static::creating(function ($model) {
-        $model->id = Str::uuid();
-    });
-}
+    public static function booted()
+    {
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
 
 
     /**
@@ -67,7 +68,15 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => \App\Enums\UserRole::class,
         ];
     }
 
+    /**
+     * Check if user has specific role
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role->value === $role;
+    }
 }
