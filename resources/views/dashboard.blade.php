@@ -1,69 +1,67 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - {{ config('app.name') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+@section('title', 'User Dashboard')
 
-<body class="bg-base-300 min-h-screen font-['Instrument_Sans']">
+@section('content')
+    <h1 class="text-3xl font-bold mb-8 tracking-tight">User Dashboard</h1>
 
-    <!-- Navbar -->
-    <div class="navbar bg-base-100/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50">
-        <div class="flex-1">
-            <a href="{{ route('dashboard') }}" class="btn btn-ghost text-xl">
-                <div
-                    class="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-secondary flex items-center justify-center font-bold text-white">
-                    P</div>
-                ProductManager
-            </a>
-        </div>
-        <div class="flex-none gap-2">
-            <div class="dropdown dropdown-end">
-                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
-                    <div class="bg-neutral text-neutral-content rounded-full w-10">
-                        <span class="text-xs">{{ substr(Auth::user()->name ?? 'U', 0, 2) }}</span>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- My Products -->
+        <div
+            class="card bg-base-100/80 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl hover:border-primary/20 transition-colors duration-300">
+            <div class="card-body">
+                <h2 class="card-title text-primary mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    My Products
+                </h2>
+                <p class="opacity-60 text-sm mb-4">View and manage your assigned products.</p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary btn-sm">View All</button>
+                    <button class="btn btn-secondary btn-sm">Add New</button>
                 </div>
-                <ul tabindex="0"
-                    class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-white/5">
-                    <li>
-                        <div class="pointer-events-none opacity-50 text-xs uppercase tracking-wider mb-1">
-                            {{ Auth::user()->name ?? 'User' }}
-                        </div>
-                    </li>
-                    <li><a>Profile</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full text-left text-error">Logout</button>
-                        </form>
-                    </li>
-                </ul>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div
+            class="card bg-base-100/80 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl hover:border-primary/20 transition-colors duration-300">
+            <div class="card-body">
+                <h2 class="card-title text-accent mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    Notifications
+                </h2>
+                <p class="opacity-60 text-sm mb-4">Check your latest updates and messages.</p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-accent btn-sm">Read All</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help & Support -->
+        <div
+            class="card bg-base-100/80 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl hover:border-primary/20 transition-colors duration-300">
+            <div class="card-body">
+                <h2 class="card-title text-info mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Help & Support
+                </h2>
+                <p class="opacity-60 text-sm mb-4">Need assistance using the platform?</p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-info btn-sm">Contact Support</button>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Content -->
-    <div class="container mx-auto p-6">
-        <h1 class="text-3xl font-bold mb-6">User Dashboard</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card bg-base-100 shadow-xl border border-white/5">
-                <div class="card-body">
-                    <h2 class="card-title">My Products</h2>
-                    <p>View and manage your assigned products.</p>
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-primary btn-sm">View All</button>
-                    </div>
-                </div>
-            </div>
-            <!-- More content placeholders -->
-        </div>
-    </div>
-
-</body>
-
-</html>
+@endsection
