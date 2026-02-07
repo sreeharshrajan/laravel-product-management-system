@@ -16,7 +16,7 @@
 
     <main class="relative mt-16 p-20 overflow-hidden">
         <div class="h-16"></div>
-        
+
         <div class="absolute inset-0 z-0 pointer-events-none">
             <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]"></div>
             <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[120px]">
@@ -76,7 +76,7 @@
         </div>
     </main>
 
-    
+
 
     <section class="py-24 container mx-auto px-6">
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
