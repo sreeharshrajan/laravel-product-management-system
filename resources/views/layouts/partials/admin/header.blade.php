@@ -4,11 +4,7 @@
         <div class="flex items-center gap-2 lg:hidden">
             <div class="dropdown">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
+                    <i data-lucide="menu" class="h-5 w-5"></i>
                 </div>
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content mt-3 z-[999] p-2 shadow-2xl bg-base-200 rounded-box w-52 border border-white/5 bg-base-300">
@@ -27,11 +23,7 @@
         <!-- Brand -->
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-content" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+                <i data-lucide="box" class="h-6 w-6 text-primary-content"></i>
             </div>
             <div class="flex flex-col hidden sm:flex">
                 <span class="text-lg font-bold leading-none tracking-tight">Product<span

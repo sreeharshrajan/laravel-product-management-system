@@ -9,7 +9,15 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Enums\UserRole;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property UserRole $role
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -76,8 +84,19 @@ class User extends Authenticatable
     /**
      * Check if user has specific role
      */
-    public function hasRole(string $role): bool
+    public function isRole($role): bool
     {
+        if ($role instanceof UserRole) {
+            return $this->role === $role;
+        }
         return $this->role->value === $role;
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::ADMIN;
     }
 }
