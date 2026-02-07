@@ -11,7 +11,7 @@
                     </svg>
                 </div>
                 <ul tabindex="0"
-                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-2xl bg-base-200 rounded-box w-52 border border-white/5">
+                    class="menu menu-sm dropdown-content mt-3 z-[999] p-2 shadow-2xl bg-base-200 rounded-box w-52 border border-white/5 bg-base-300">
                     <li><a href="{{ route('admin.dashboard') }}"
                             class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a></li>
                     <li>
@@ -26,15 +26,17 @@
 
         <!-- Brand -->
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-error flex items-center justify-center shadow-lg shadow-error/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-error-content" fill="none"
+            <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-content" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
             </div>
             <div class="flex flex-col hidden sm:flex">
-                <span class="text-xl font-bold">Admin<span class="text-error">Panel</span></span>
+                <span class="text-lg font-bold leading-none tracking-tight">Product<span
+                        class="text-primary">Manager</span></span>
+                <span class="text-[10px] uppercase tracking-widest opacity-50 font-semibold">Admin Panel</span>
             </div>
         </a>
 
@@ -43,46 +45,54 @@
             <ul class="menu menu-horizontal px-1 gap-2">
                 <li>
                     <a href="{{ route('admin.dashboard') }}"
-                        class="rounded-lg hover:text-error transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-error/10 text-error font-bold' : '' }}">
+                        class="rounded-lg hover:text-primary transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary font-bold' : '' }}">
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <details>
-                        <summary class="rounded-lg hover:text-error transition-colors">Management</summary>
-                        <ul class="p-2 bg-base-200 w-48 z-[1] border border-white/5 shadow-2xl rounded-xl mt-2">
-                            <li><a class="hover:text-error">Users</a></li>
-                            <li><a class="hover:text-error">Settings</a></li>
-                        </ul>
-                    </details>
+                    <a href="{{ route('admin.users.index') }}"
+                        class="rounded-lg hover:text-primary transition-colors {{ request()->routeIs('admin.users.index') ? 'bg-primary/10 text-primary font-bold' : '' }}">
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.products.index') }}"
+                        class="rounded-lg hover:text-primary transition-colors {{ request()->routeIs('admin.products.index') ? 'bg-primary/10 text-primary font-bold' : '' }}">
+                        Products
+                    </a>
                 </li>
             </ul>
         </div>
 
         <!-- User Profile -->
         <div class="flex items-center gap-3">
-            <div class="dropdown dropdown-end">
-                <div tabindex="0" role="button"
-                    class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
-                    <div class="bg-neutral text-neutral-content rounded-full w-9">
-                        <span class="text-xs font-bold">{{ substr(Auth::user()->name ?? 'A', 0, 1) }}</span>
+            @auth
+                <div class="dropdown dropdown-end pointer-events-auto">
+                    <div tabindex="0" role="button"
+                        class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
+                        <div class="bg-neutral text-neutral-content rounded-full">
+                            <span class="text-lg font-bold text-white">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</span>
+                        </div>
                     </div>
+                    <ul tabindex="0"
+                        class="mt-2 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-64 border border-white/5">
+                        <li class="py-2 border-b border-white/5">
+                            <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
+                            <div class="text-xs opacity-50 tracking-widest hover:text-primary">{{ Auth::user()->email }}
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" onclick="event.preventDefault(); this.nextElementSibling.submit();"
+                                class="text-primary hover:bg-primary/10 hover:text-primary font-bold">Logout</a>
+                            <form method="POST" action="{{ route('logout') }}" class="hidden">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
                 </div>
-                <ul tabindex="0"
-                    class="mt-3 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-56 border border-white/5">
-                    <li class="px-4 py-3 border-b border-white/5 mb-2 pointer-events-none">
-                        <span class="text-xs opacity-50 uppercase tracking-widest">Administrator</span>
-                        <div class="text-sm font-bold text-error">{{ Auth::user()->name }}</div>
-                    </li>
-                    <li><a href="{{ route('profile.edit') }}">Account Settings</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full text-left text-error">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
+            @endauth
         </div>
     </div>
 </nav>

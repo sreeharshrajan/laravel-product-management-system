@@ -2,7 +2,7 @@
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
 
         <div class="flex items-center gap-2">
-            @auth
+            @if (Auth::check() && !Auth::user()->isAdmin())
                 <div class="dropdown lg:hidden">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -15,10 +15,9 @@
                         class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-2xl bg-base-200 rounded-box w-52 border border-white/5">
                         <li><a href="{{ route('dashboard') }}" class="active:bg-primary">Dashboard</a></li>
                         <li><a href="{{ route('products.index') }}">Products</a></li>
-                        <li><a href="{{ route('orders.index') }}">Orders</a></li>
                     </ul>
                 </div>
-            @endauth
+            @endif
 
             <a href="/" class="flex items-center gap-3">
                 <div
@@ -39,7 +38,7 @@
 
         <div class="hidden lg:flex">
             <ul class="menu menu-horizontal px-1 gap-2">
-                @auth
+                @if (Auth::check() && !Auth::user()->isAdmin())
                     <li>
                         <a href="{{ route('dashboard') }}"
                             class="rounded-lg hover:text-primary transition-colors {{ request()->routeIs('dashboard') ? 'bg-primary/10 text-primary font-bold' : '' }}">
@@ -52,12 +51,12 @@
                             Products
                         </a>
                     </li>
-                @endauth
+                @endif
             </ul>
         </div>
 
         <div class="flex items-center gap-3">
-            @auth
+            @if (Auth::check() && !Auth::user()->isAdmin())
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button"
                         class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
@@ -68,10 +67,9 @@
                     <ul tabindex="0"
                         class="mt-3 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-56 border border-white/5">
                         <li class="px-4 py-3 border-b border-white/5 mb-2 pointer-events-none">
-                            <span class="text-xs opacity-50 uppercase tracking-widest">System User</span>
                             <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
                         </li>
-                        <li><a href="{{ route('profile.edit') }}">Account Settings</a></li>
+                        <li><a href="#">Account Settings</a></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}" class="w-full">
                                 @csrf
@@ -82,7 +80,7 @@
                 </div>
             @else
                 <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
-            @endauth
+            @endif
         </div>
     </div>
 </nav>
