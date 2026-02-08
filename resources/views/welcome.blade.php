@@ -14,7 +14,7 @@
 
     @include('layouts.partials.web.header')
 
-    <main class="relative mt-16 p-20 overflow-hidden">
+    <main class="relative p-20 overflow-hidden">
         <div class="h-16"></div>
 
         <div class="absolute inset-0 z-0 pointer-events-none">

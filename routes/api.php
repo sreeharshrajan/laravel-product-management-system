@@ -20,5 +20,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
         //User Management
         Route::apiResource('users', UserController::class);
+
+        // Product Management
+        Route::apiResource('products', ProductController::class);
     });
+
+    // Product Management (Authenticated Users - View Only)
+    Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 });
