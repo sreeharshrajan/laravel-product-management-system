@@ -2,12 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\AdminMiddleware;
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 // Public Routes
 Route::post('/register', [AuthController::class, 'register']);
