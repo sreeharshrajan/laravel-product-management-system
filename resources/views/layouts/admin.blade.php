@@ -20,7 +20,7 @@
     </div>
 
     <!-- Content -->
-    <div class="container mx-auto p-6 flex-grow relative z-10">
+    <div class="container mx-auto p-6 flex-grow relative min-h-screen">
         @yield('content')
     </div>
 

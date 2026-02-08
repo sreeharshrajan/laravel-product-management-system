@@ -20,7 +20,7 @@
                 </h2>
                 <p class="opacity-60 text-sm mb-4">View and manage your assigned products.</p>
                 <div class="card-actions justify-end">
-                    <button class="btn btn-primary btn-sm">View All</button>
+                    <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">View All</a>
                     <button class="btn btn-secondary btn-sm">Add New</button>
                 </div>
             </div>
