@@ -31,8 +31,10 @@ class Product extends Model
     public function scopeSearch(Builder $query, ?string $term): void
     {
         if ($term) {
-            $query->where('title', 'like', "%{$term}%")
+            $query->where(function ($q) use ($term) {
+                $q->where('title', 'like', "%{$term}%")
                   ->orWhere('description', 'like', "%{$term}%");
+            });
         }
     }
 }

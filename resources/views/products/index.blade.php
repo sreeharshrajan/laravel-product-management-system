@@ -3,11 +3,20 @@
 @section('title', 'Products')
 
 @section('content')
-    <div class="mb-8 flex items-center justify-between">
+    <div class="mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight mb-2">Products</h1>
             <p class="opacity-60">All products</p>
         </div>
+        <form action="{{ route('products.index') }}" method="GET" class="w-full md:w-auto">
+            <label class="input input-bordered flex items-center gap-2 rounded-xl">
+                <input type="text" name="search" class="grow" placeholder="Search products..."
+                    value="{{ request('search') }}" />
+                <button type="submit">
+                    <i data-lucide="search" class="w-4 h-4 opacity-70"></i>
+                </button>
+            </label>
+        </form>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

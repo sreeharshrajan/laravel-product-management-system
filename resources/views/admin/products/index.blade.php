@@ -3,11 +3,22 @@
 @section('title', 'Products')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h1 class="text-3xl font-bold">Products</h1>
-        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Create Product
-        </a>
+        <div class="flex items-center gap-4 w-full md:w-auto">
+            <form action="{{ route('admin.products.index') }}" method="GET" class="w-full md:w-auto">
+                <label class="input input-bordered flex items-center gap-2">
+                    <input type="text" name="search" class="grow" placeholder="Search products..."
+                        value="{{ request('search') }}" />
+                    <button type="submit">
+                        <i data-lucide="search" class="w-4 h-4 opacity-70"></i>
+                    </button>
+                </label>
+            </form>
+            <a href="{{ route('admin.products.create') }}" class="btn btn-primary whitespace-nowrap">
+                <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Create Product
+            </a>
+        </div>
     </div>
 
     @if (session('success'))

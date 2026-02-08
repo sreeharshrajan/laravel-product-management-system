@@ -10,14 +10,28 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Mews\Purifier\Facades\Purifier;
 
+use App\Services\SearchService;
+
 class ProductController extends Controller
 {
+    protected $searchService;
+
+    public function __construct(SearchService $searchService)
+    {
+        $this->searchService = $searchService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
+        $query = $request->input('search');
+        $products = $this->searchService->search($query, 10);
+        
+        // Ensure pagination links carry the search term
+        $products->appends(['search' => $query]);
+
         return view('admin.products.index', compact('products'));
     }
 
