@@ -24,6 +24,16 @@ class StandardUserSeeder extends Seeder
             ]
         );
 
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'role' => 'user',
+                'password' => Hash::make('password123'),
+                'email_verified_at' => now(),
+            ]
+        );
+
         $this->command->info('Standard user created successfully');
     }
 }

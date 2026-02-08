@@ -177,6 +177,8 @@ If this were a large-scale SaaS product, I would introduce:
 
 ## 📚 API Documentation
 
+Detailed API documentation is available at: [http://localhost:8080/api/documentation](http://localhost:8080/api/documentation)
+
 ### Authentication
 
 | Method | Endpoint | Description |

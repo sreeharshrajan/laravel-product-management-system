@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 
+use OpenApi\Annotations as OA;
+
 class AuthController extends Controller
 {
     public function login(Request $request)

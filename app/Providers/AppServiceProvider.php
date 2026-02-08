@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -18,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             UserRepositoryInterface::class,
-            UserRepository::class 
+            UserRepository::class
         );
     }
 
