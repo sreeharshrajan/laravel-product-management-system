@@ -23,7 +23,7 @@ Basic Laravel application for managing products, featuring secure authentication
 - **Product Management**: Create, Read, Update, and Delete products.
 - **Rich Content**: Support for rich text descriptions.
 - **Advanced Search**: Filter products by keyword with optimized database queries.
-- **Role-Based Access Control**: Granular permissions (Admin vs Standard User).
+- **Role-Based Access Control**: Granular permissions (Admin vs User).
 - **Automated Deployment**: One-click setup using Docker Compose.
 
 ## 🚀 Tech Stack
