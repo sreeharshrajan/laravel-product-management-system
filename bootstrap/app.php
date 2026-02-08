@@ -8,6 +8,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\AdminMiddleware;
 
+use App\Exceptions\ApiException;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [
@@ -26,5 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('api/*')) {
+                return (new ApiException($e->getMessage(), 405))->render($request);
+            }
+        });
     })->create();
