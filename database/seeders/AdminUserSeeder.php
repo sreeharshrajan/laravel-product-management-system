@@ -22,5 +22,7 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        $this->command->info('Admin user created successfully');
     }
 }
