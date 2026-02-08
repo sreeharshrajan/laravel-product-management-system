@@ -3,8 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <h1 class="text-xl mb-8 tracking-tight">Welcome back, <span class="text-primary">{{ Auth::user()->name }}</span>
+    <h1 class="text-xl mb-2 tracking-tight">Welcome back, <span class="text-primary">{{ Auth::user()->name }}</span>
     </h1>
+    <p class="text-sm mb-8">Logged in as <span class="badge badge-primary">{{ Auth::user()->role->name }}</span></p>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="stats shadow-2xl bg-base-100/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
