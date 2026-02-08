@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Mews\Purifier\Facades\Purifier;
 
 class ProductController extends Controller
 {
@@ -34,6 +35,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $data = $request->validated();
+        $data['description'] = Purifier::clean($data['description']);
         $data['user_id'] = $request->user()->id;
         
         Product::create($data);
@@ -63,7 +65,12 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $data = $request->validated();
+        if (isset($data['description'])) {
+            $data['description'] = Purifier::clean($data['description']);
+        }
+        
+        $product->update($data);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully.');
