@@ -3,6 +3,13 @@
 @section('title', 'Create Product')
 
 @section('content')
+    @push('styles')
+        <style>
+            .ck-editor__editable_inline {
+                min-height: 200px;
+            }
+        </style>
+    @endpush
     <div class="min-w-xl mx-auto">
         <div class="flex items-center gap-4 mb-6">
             <a href="{{ route('admin.products.index') }}" class="btn btn-ghost btn-circle">
@@ -27,8 +34,9 @@
 
                 <div class="form-control w-full mb-4">
                     <label class="label"><span class="label-text font-semibold">Description</span></label>
-                    <textarea name="description" class="textarea textarea-bordered h-32 @error('description') textarea-error @enderror"
-                        placeholder="Product Description" required>{{ old('description') }}</textarea>
+                    <textarea id="description-editor" name="description"
+                        class="textarea textarea-bordered hidden h-64 @error('description') textarea-error @enderror"
+                        placeholder="Product Description">{{ old('description') }}</textarea>
                     @error('description')
                         <span class="text-error text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -49,7 +57,7 @@
                         <label class="label"><span class="label-text font-semibold">Date Available</span></label>
                         <input type="date" name="date_available"
                             class="input input-bordered w-full @error('date_available') input-error @enderror"
-                            value="{{ old('date_available') }}" required>
+                            value="{{ old('date_available', date('Y-m-d')) }}" required>
                         @error('date_available')
                             <span class="text-error text-sm mt-1">{{ $message }}</span>
                         @enderror
@@ -66,3 +74,14 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@endpush

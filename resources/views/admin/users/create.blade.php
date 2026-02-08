@@ -8,7 +8,7 @@
         <a href="{{ route('admin.users.index') }}" class="btn btn-ghost">Back to Users</a>
     </div>
 
-    <div class="card bg-base-100 shadow-xl w-xl mx-auto">
+    <div class="card bg-base-100 shadow-xl min-w-xl mx-auto">
         <div class="card-body">
             <form action="{{ route('admin.users.store') }}" method="POST">
                 @csrf

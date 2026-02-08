@@ -20,7 +20,18 @@ class StoreProductRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'date_available' => 'required|date',
+            'date_available' => 'required|date|after_or_equal:today',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Title is required',
+            'description.required' => 'Description is required',
+            'price.required' => 'Price is required',
+            'date_available.required' => 'Date available is required',
+            'date_available.after_or_equal' => 'Date available must be after or today',
         ];
     }
 }
