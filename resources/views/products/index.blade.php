@@ -25,7 +25,7 @@
                 class="group relative flex flex-col bg-base-100 rounded-3xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:-translate-y-2 overflow-hidden">
 
                 <div
-                    class="relative h-52 w-full overflow-hidden rounded-2xl bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
+                    class="relative w-full overflow-hidden rounded-2xl bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
                     @if ($product->created_at->diffInDays(now()) < 2)
                         <div class="absolute top-4 left-4">
                             <span class="badge badge-primary">

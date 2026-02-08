@@ -8,5 +8,5 @@ Route::middleware(['auth', 'user'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::resource('/products', ProductController::class)->only(['index', 'show'])->names('products');
+    Route::resource('/products', ProductController::class)->only(['index', 'show'])->names('web.products');
 });

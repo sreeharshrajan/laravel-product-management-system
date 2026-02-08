@@ -46,7 +46,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('products.index') }}"
+                        <a href="{{ route('web.products.index') }}"
                             class="rounded-lg hover:text-primary transition-colors {{ request()->routeIs('products.*') ? 'bg-primary/10 text-primary font-bold' : '' }}">
                             Products
                         </a>
