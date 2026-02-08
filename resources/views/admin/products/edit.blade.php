@@ -3,7 +3,7 @@
 @section('title', 'Edit Product')
 
 @section('content')
-    <div class="max-w-2xl mx-auto">
+    <div class="min-w-xl mx-auto">
         <div class="flex items-center gap-4 mb-6">
             <a href="{{ route('admin.products.index') }}" class="btn btn-ghost btn-circle">
                 <i data-lucide="arrow-left" class="w-6 h-6"></i>
