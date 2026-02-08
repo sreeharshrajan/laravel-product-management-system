@@ -6,6 +6,7 @@ use App\Http\Middleware\AdminMiddleware;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ProductController;
 
 // Public Routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -16,8 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Admin Routes
-    Route::middleware(AdminMiddleware::class)->group(function () {
-        // Admin User Management
-        Route::apiResource('admin/users', UserController::class);
+    Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
+        //User Management
+        Route::apiResource('users', UserController::class);
     });
 });
