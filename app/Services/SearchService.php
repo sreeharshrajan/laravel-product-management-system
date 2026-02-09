@@ -21,14 +21,14 @@ class SearchService
      * @param int $perPage Items per page
      * @return LengthAwarePaginator
      */
-    public function search(?string $query, int $perPage = 15): LengthAwarePaginator
+    public function search(?string $query, int $perPage = 15, bool $activeOnly = false): LengthAwarePaginator
     {
         if (empty($query)) {
-            return $this->productRepository->getAll($perPage);
+            return $this->productRepository->getAll($perPage, $activeOnly);
         }
 
         // Potential future optimization: Integrate ElasticSearch or Meilisearch here
         // For now, we use the optimized repository search (Database Index)
-        return $this->productRepository->search($query, $perPage);
+        return $this->productRepository->search($query, $perPage, $activeOnly);
     }
 }

@@ -20,6 +20,7 @@ class UpdateProductRequest extends FormRequest
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:0',
+            'is_active' => 'sometimes|boolean',
             'date_available' => 'sometimes|required|date',
         ];
     }

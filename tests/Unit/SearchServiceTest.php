@@ -24,7 +24,7 @@ class SearchServiceTest extends TestCase
 
         $repository->shouldReceive('search')
             ->once()
-            ->with('apple', 15)
+            ->with('apple', 15, false)
             ->andReturn($paginator);
 
         $result = $service->search('apple', 15);
@@ -40,7 +40,7 @@ class SearchServiceTest extends TestCase
 
         $repository->shouldReceive('getAll')
             ->once()
-            ->with(15)
+            ->with(15, false)
             ->andReturn($paginator);
 
         $result = $service->search('', 15);
@@ -56,7 +56,7 @@ class SearchServiceTest extends TestCase
 
         $repository->shouldReceive('getAll')
             ->once()
-            ->with(15)
+            ->with(15, false)
             ->andReturn($paginator);
 
         $result = $service->search(null, 15);

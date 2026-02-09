@@ -20,6 +20,7 @@ class StoreProductRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'is_active' => 'sometimes|boolean',
             'date_available' => 'required|date|after_or_equal:today',
         ];
     }

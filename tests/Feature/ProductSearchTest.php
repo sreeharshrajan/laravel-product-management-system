@@ -18,7 +18,7 @@ class ProductSearchTest extends TestCase
         $this->mock(SearchService::class, function ($mock) {
             $paginator = new LengthAwarePaginator([], 0, 15);
             $mock->shouldReceive('search')
-                ->with('smartphone', 12)
+                ->with('smartphone', 12, true)
                 ->once()
                 ->andReturn($paginator);
         });

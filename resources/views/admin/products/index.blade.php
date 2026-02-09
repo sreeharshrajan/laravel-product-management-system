@@ -34,6 +34,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Price</th>
+                    <th>Status</th>
                     <th>Date Available</th>
                     <th>Actions</th>
                 </tr>
@@ -43,6 +44,13 @@
                     <tr class="hover">
                         <td class="font-bold">{{ $product->title }}</td>
                         <td>${{ number_format($product->price, 2) }}</td>
+                        <td>
+                            @if ($product->is_active)
+                                <span class="badge badge-success badge-sm text-white">Active</span>
+                            @else
+                                <span class="badge badge-error badge-sm text-white">Inactive</span>
+                            @endif
+                        </td>
                         <td>{{ $product->date_available->format('M d, Y') }}</td>
                         <td class="flex gap-2">
                             <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-info btn-outline">

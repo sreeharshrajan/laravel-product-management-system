@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('search');
-        $products = $this->searchService->search($query, 12);
+        $products = $this->searchService->search($query, 12, true);
         
         // Ensure pagination links carry the search term
         $products->appends(['search' => $query]);

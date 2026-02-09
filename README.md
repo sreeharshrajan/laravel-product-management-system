@@ -205,7 +205,6 @@ Detailed API documentation is available at: [http://localhost:8080/api/documenta
 | :--- | :--- | :--- |
 | `GET` | `/api/admin/users` | List users |
 | `PUT` | `/api/admin/users/{id}` | Update user role |
-| `GET` | `/api/admin/analytics` | Get system analytics |
 
 ### 🔐 Authentication
 

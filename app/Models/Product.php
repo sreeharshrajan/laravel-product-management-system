@@ -17,12 +17,14 @@ class Product extends Model
         'title',
         'description',
         'price',
+        'is_active',
         'date_available',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'date_available' => 'date',
+        'is_active' => 'boolean',
     ];
 
     /**

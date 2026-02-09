@@ -54,6 +54,16 @@
                     </div>
 
                     <div class="form-control w-full">
+                        <label class="label"><span class="label-text font-semibold">Status</span></label>
+                        <label
+                            class="cursor-pointer label justify-start gap-4 border border-base-300 rounded-lg p-3 bg-base-100">
+                            <span class="label-text font-medium">Active Status</span>
+                            <input type="checkbox" name="is_active" class="toggle toggle-primary" value="1"
+                                {{ old('is_active', true) ? 'checked' : '' }} />
+                        </label>
+                    </div>
+
+                    <div class="form-control w-full">
                         <label class="label"><span class="label-text font-semibold">Date Available</span></label>
                         <input type="date" name="date_available"
                             class="input input-bordered w-full @error('date_available') input-error @enderror"

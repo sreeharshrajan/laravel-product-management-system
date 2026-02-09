@@ -8,14 +8,26 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function getAll(int $perPage = 15): LengthAwarePaginator
+    public function getAll(int $perPage = 15, bool $activeOnly = false): LengthAwarePaginator
     {
-        return Product::latest()->paginate($perPage);
+        $query = Product::latest();
+        
+        if ($activeOnly) {
+            $query->where('is_active', true);
+        }
+        
+        return $query->paginate($perPage);
     }
 
-    public function search(string $term, int $perPage = 15): LengthAwarePaginator
+    public function search(string $term, int $perPage = 15, bool $activeOnly = false): LengthAwarePaginator
     {
-        return Product::search($term)->paginate($perPage);
+        $query = Product::search($term);
+
+        if ($activeOnly) {
+            $query->where('is_active', true);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function findById(string $id): ?Product
