@@ -6,16 +6,24 @@ Basic Laravel application for managing products, featuring secure authentication
 
 ## Table of Contents
 
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [System Architecture](#-system-architecture)
-- [Installation & Deployment](#-installation--deployment)
-- [Security Implementation](#-security-implementation)
-- [Performance Optimization](#-performance-optimization)
-- [Challenges & Solutions](#-challenges--solutions)
-- [Future Improvements](#-future-improvements)
-- [API Documentation](#-api-documentation)
-
+- [Laravel Product Management System](#laravel-product-management-system)
+  - [Table of Contents](#table-of-contents)
+  - [✨ Features](#-features)
+  - [🚀 Tech Stack](#-tech-stack)
+  - [🛠 System Architecture](#-system-architecture)
+    - [1. Service Layer (`App\Services`)](#1-service-layer-appservices)
+    - [2. Repository Layer (`App\Repositories`)](#2-repository-layer-apprepositories)
+    - [3. Centralized Validation (`Form Requests`)](#3-centralized-validation-form-requests)
+    - [4. Role-Based Access Control (RBAC)](#4-role-based-access-control-rbac)
+    - [5. Universal Unique Identifiers (UUIDs)](#5-universal-unique-identifiers-uuids)
+  - [ER Diagram](#er-diagram)
+  - [📁 Project Structure](#-project-structure)
+  - [🐳 Installation \& Deployment](#-installation--deployment)
+    - [Prerequisites](#prerequisites)
+    - [Quick Start](#quick-start)
+    - [✅ Test Categories](#-test-categories)
+  - [📝 Code Standards](#-code-standards)
+  - [📞 Contact](#-contact)
 
 ## ✨ Features
 
@@ -42,29 +50,34 @@ Basic Laravel application for managing products, featuring secure authentication
 
 This project follows the **Repository-Service Pattern** to ensure separation of concerns, testability, and maintainability.
 
-### 1. **Service Layer (`App\Services`)**
-   - **Purpose**: Encapsulates business logic.
-   - **Benefit**: Keeps Controllers "thin". The Controller's only job is to receive the request, assign to the Service, and return the response.
+### 1. Service Layer (`App\Services`)
 
-### 2. **Repository Layer (`App\Repositories`)**
-   - **Purpose**: Abstraction layer for data access.
-   - **Benefit**: Decouples the business logic from the specific ORM or database. Makes it easier to switch data sources or mock data for testing.
-   - **Optimization**: All Eloquent queries (e.g., `Product::where(...)`) are contained here.
+- **Purpose**: Encapsulates business logic.
+- **Benefit**: Keeps Controllers "thin". The Controller's only job is to receive the request, assign to the Service, and return the response.
 
-### 3. **Centralized Validation (`Form Requests`)**
-   - **Strict Validation**: All incoming data is validated using dedicated Form Request classes (e.g., `StoreProductRequest`).
-   - **Security**: Ensures no invalid or malicious data reaches the Service layer.
+### 2. Repository Layer (`App\Repositories`)
 
-### 4. **Role-Based Access Control (RBAC)**
-   - **Implementation**: Simple, database-driven role system without external packages like Spatie.
-   - **Structure**: `users` table contains a `role` column (or relation).
-   - **Enforcement**:
-     - **Gates & Policies**: Used for authorization checks (e.g., `can('create-product')`).
-     - **Middleware**: Routes are protected by role-based middleware.
+- **Purpose**: Abstraction layer for data access.
+- **Benefit**: Decouples the business logic from the specific ORM or database.
+- **Optimization**: All Eloquent queries (e.g., `Product::where(...)`) are contained here.
 
-### 5. **Universal Unique Identifiers (UUIDs)**
-   - **Implementation**: All primary keys (Users, Products, Roles) use UUIDs instead of standard auto-incrementing integers.
-   - **Benefit**: Enhanced security (preventing ID enumeration) and better support for distributed systems.
+### 3. Centralized Validation (`Form Requests`)
+
+- **Strict Validation**: All incoming data is validated using dedicated Form Request classes (e.g., `StoreProductRequest`).
+- **Security**: Ensures no invalid or malicious data reaches the Service layer.
+
+### 4. Role-Based Access Control (RBAC)
+
+- **Implementation**: Simple, database-driven role system without external packages.
+- **Structure**: `users` table contains a `role` column (or relation).
+- **Enforcement**:
+  - **Gates & Policies**: Used for authorization checks (e.g., `can('create-product')`)
+  - **Middleware**: Routes are protected by role-based middleware.
+
+### 5. Universal Unique Identifiers (UUIDs)
+
+- **Implementation**: All primary keys use UUIDs instead of auto-incrementing integers.
+- **Benefit**: Prevents ID enumeration and supports distributed systems.
 
 ## ER Diagram
 
@@ -72,7 +85,7 @@ This project follows the **Repository-Service Pattern** to ensure separation of 
 
 ## 📁 Project Structure
 
-```
+```bash
 app/
 ├── Http/
 │   ├── Controllers/
@@ -109,23 +122,28 @@ app/
 The project includes a fully automated `docker-compose` setup.
 
 ### Prerequisites
+
 - Docker & Docker Compose
 
 ### Quick Start
+
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/sreeharshrajan/laravel-product-management-system.git
    cd laravel-product-management-system
    ```
 
 2. **Run the deployment script**
+
    ```bash
    # Make script executable
    chmod +x deploy.sh
 
    # Run deployment
    ./deploy.sh
-   ```
+  
+   ```bash
    This script will:
    - Copy `.env.example` to `.env`.
    - Build and start Docker containers.
@@ -135,6 +153,7 @@ The project includes a fully automated `docker-compose` setup.
    - Set file permissions.
 
 3. **Access the Application**
+
    - Web: `http://localhost:8080`
    - Database: `mysql:3306`
 
@@ -155,20 +174,24 @@ The project includes a fully automated `docker-compose` setup.
 ## 🧩 Challenges & Solutions
 
 ### 1. **Handling Soft Deletes in Unique Validations**
+
 - **Challenge**: Soft-deleted products could cause unique constraint violations if a new product used the same title.
-- **Solution**: Used validaton rules like `Rule::unique('products')->withoutTrashed()` to ensure uniqueness ignores deleted records, or explicitly checked active records.
+- **Solution**: Used validation rules like `Rule::unique('products')->withoutTrashed()` to ensure uniqueness ignores deleted records, or explicitly checked active records.
 
 ### 2. **Efficient Search on Large Datasets**
+
 - **Challenge**: Simple `LIKE %...%` queries can be slow on large tables.
 - **Solution**: Added database indexes on searchable columns (`title`) and implemented query scopes to encapsulate search logic.
 
 ### 3. **Rich Text Editor Security**
+
 - **Challenge**: Rich text editors can be used to inject malicious content.
 - **Solution**: Implemented a whitelist of allowed HTML tags and attributes using the `HTMLPurifier` library.
 
 ## 🔮 Future Improvements
 
 If this were a large-scale SaaS product, I would introduce:
+
 - **API Versioning**: For mobile/external consumers.
 - **Caching Layer**: aggressive Redis caching for read-heavy product lists.
 - **Elasticsearch/Meilisearch**: For more advanced full-text search capabilities beyond SQL `LIKE`.
@@ -244,6 +267,6 @@ php artisan test --testsuite=Unit
 
 - **Developer**: Sreeharsh K
 - **Position**: PHP Developer
-- **Email**: sreeharshkrajan@gmail.com
+- **Email**: [sreeharshkrajan@gmail.com](sreeharshkrajan@gmail.com)
 - **Date**: 2026-02-06
-- **Repository**: https://github.com/sreeharshkrajan/laravel-product-management
+- **Repository**: [https://github.com/sreeharshkrajan/laravel-product-management](https://github.com/sreeharshkrajan/laravel-product-management)
