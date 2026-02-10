@@ -33,6 +33,7 @@
                     <th>Price</th>
                     <th>Status</th>
                     <th>Date Available</th>
+                    <th>Created At</th>
                     <th>Actions</th>
                 </tr>
             </thead>
