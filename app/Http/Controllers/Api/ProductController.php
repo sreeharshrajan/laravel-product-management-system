@@ -37,10 +37,14 @@ class ProductController extends Controller
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
         $data['description'] = Purifier::clean($data['description']);
-        
+
         $product = $this->productService->createProduct($data);
 
-        return response()->json($product, 201);
+        return response()->json([
+            'id' => $product->id,
+            'message' => 'Product created successfully',
+            'product' => $product
+        ], 201);
     }
 
     public function show(string $id): JsonResponse
