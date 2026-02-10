@@ -9,6 +9,7 @@ use App\Services\ProductService;
 use App\Services\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Mews\Purifier\Facades\Purifier;
 
 class ProductController extends Controller
 {
@@ -33,7 +34,11 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): JsonResponse
     {
-        $product = $this->productService->createProduct($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+        $data['description'] = Purifier::clean($data['description']);
+        
+        $product = $this->productService->createProduct($data);
 
         return response()->json($product, 201);
     }
@@ -57,7 +62,13 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        $updatedProduct = $this->productService->updateProduct($product, $request->validated());
+        $data = $request->validated();
+
+        if (isset($data['description'])) {
+            $data['description'] = Purifier::clean($data['description']);
+        }
+
+        $updatedProduct = $this->productService->updateProduct($product, $data);
 
         return response()->json($updatedProduct);
     }

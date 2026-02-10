@@ -55,36 +55,45 @@
                 </li>
             </ul>
         </div>
+        <div class="flex justify-between flex-row">
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="btn btn-ghost btn-circle" title="Toggle theme">
+                <i id="theme-icon-light" data-lucide="sun" class="h-5 w-5 hidden"></i>
+                <i id="theme-icon-dark" data-lucide="moon" class="h-5 w-5"></i>
+            </button>
 
-        <!-- User Profile -->
-        <div class="flex items-center gap-3">
-            @auth
-                <div class="dropdown dropdown-end pointer-events-auto">
-                    <div tabindex="0" role="button"
-                        class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
-                        <div class="bg-neutral text-neutral-content rounded-full">
-                            <span class="text-lg font-bold text-white">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</span>
-                        </div>
-                    </div>
-                    <ul tabindex="0"
-                        class="mt-2 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-64 border border-white/5">
-                        <li class="py-2 border-b border-white/5">
-                            <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
-                            <div class="text-xs opacity-50 tracking-widest hover:text-primary">{{ Auth::user()->email }}
+            <!-- User Profile -->
+            <div class="flex items-center gap-3">
+                @auth
+                    <div class="dropdown dropdown-end pointer-events-auto">
+                        <div tabindex="0" role="button"
+                            class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
+                            <div class="bg-neutral text-neutral-content rounded-full">
+                                <span
+                                    class="text-lg font-bold text-white">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</span>
                             </div>
-                        </li>
-                        <li>
-                            <a href="#" onclick="event.preventDefault(); this.nextElementSibling.submit();"
-                                class="text-primary hover:bg-primary/10 hover:text-primary font-bold">Logout</a>
-                            <form method="POST" action="{{ route('logout') }}" class="hidden">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
-            @endauth
+                        </div>
+                        <ul tabindex="0"
+                            class="mt-2 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-64 border border-white/5">
+                            <li class="py-2 border-b border-white/5">
+                                <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
+                                <div class="text-xs opacity-50 tracking-widest hover:text-primary">
+                                    {{ Auth::user()->email }}
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#" onclick="event.preventDefault(); this.nextElementSibling.submit();"
+                                    class="text-primary hover:bg-primary/10 hover:text-primary font-bold">Logout</a>
+                                <form method="POST" action="{{ route('logout') }}" class="hidden">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
+                @endauth
+            </div>
         </div>
     </div>
 </nav>

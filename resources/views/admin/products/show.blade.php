@@ -5,7 +5,7 @@
 @section('content')
     <div class="min-w-xl mx-auto">
         <div class="mb-6">
-            <a href="{{ route('web.products.index') }}" class="btn btn-ghost btn-sm gap-2 pl-0 hover:bg-transparent">
+            <a href="{{ route('admin.products.index') }}" class="btn btn-ghost btn-sm gap-2 pl-0 hover:bg-transparent">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Products
             </a>
         </div>
@@ -43,6 +43,31 @@
                                 {{ $product->date_available->format('l, M d, Y') }}
                             </div>
                         </div>
+
+                        <div class="flex flex-col gap-1 mb-6">
+                            <span class="text-sm uppercase tracking-widest opacity-50 font-semibold">Status</span>
+                            <div class="font-semibold flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-primary"></i>
+                                {{ $product->is_active ? 'Active' : 'Inactive' }}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-1 mb-6">
+                            <span class="text-sm uppercase tracking-widest opacity-50 font-semibold">Created At</span>
+                            <div class="font-semibold flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-primary"></i>
+                                {{ $product->created_at->format('l, M d, Y') }}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-1 mb-6">
+                            <span class="text-sm uppercase tracking-widest opacity-50 font-semibold">Updated At</span>
+                            <div class="font-semibold flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-primary"></i>
+                                {{ $product->updated_at->format('l, M d, Y') }}
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>

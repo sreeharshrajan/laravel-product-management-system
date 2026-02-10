@@ -6,15 +6,12 @@
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h1 class="text-3xl font-bold">Products</h1>
         <div class="flex items-center gap-4 w-full md:w-auto">
-            <form action="{{ route('admin.products.index') }}" method="GET" class="w-full md:w-auto">
-                <label class="input input-bordered flex items-center gap-2">
-                    <input type="text" name="search" class="grow" placeholder="Search products..."
-                        value="{{ request('search') }}" />
-                    <button type="submit">
-                        <i data-lucide="search" class="w-4 h-4 opacity-70"></i>
-                    </button>
-                </label>
-            </form>
+            <label class="input input-bordered flex items-center gap-2 relative">
+                <input type="text" id="search-input" class="grow" placeholder="Search products..."
+                    value="{{ request('search') }}" />
+                <i data-lucide="search" class="w-4 h-4 opacity-70" id="search-icon"></i>
+                <span class="loading loading-spinner loading-sm absolute right-3 hidden" id="search-loading"></span>
+            </label>
             <a href="{{ route('admin.products.create') }}" class="btn btn-primary whitespace-nowrap">
                 <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Create Product
             </a>
@@ -39,45 +36,123 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($products as $product)
-                    <tr class="hover">
-                        <td class="font-bold">{{ $product->title }}</td>
-                        <td>${{ number_format($product->price, 2) }}</td>
-                        <td>
-                            @if ($product->is_active)
-                                <span class="badge badge-success badge-sm text-white">Active</span>
-                            @else
-                                <span class="badge badge-error badge-sm text-white">Inactive</span>
-                            @endif
-                        </td>
-                        <td>{{ $product->date_available->format('M d, Y') }}</td>
-                        <td class="flex gap-2">
-                            <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-info btn-outline">
-                                <i data-lucide="edit-2" class="w-4 h-4"></i> Edit
-                            </a>
-                            <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-error btn-outline">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-
-                @if ($products->isEmpty())
-                    <tr>
-                        <td colspan="4" class="text-center py-8 opacity-50">No products found.</td>
-                    </tr>
-                @endif
+            <tbody id="products-table-body">
+                @include('admin.products.partials.table-rows', ['products' => $products])
             </tbody>
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $products->links() }}
+
+    <div class="mt-4" id="pagination-container">
+        @include('admin.products.partials.pagination', ['products' => $products])
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let searchTimeout;
+            const searchInput = $('#search-input');
+            const searchIcon = $('#search-icon');
+            const searchLoading = $('#search-loading');
+            const tableBody = $('#products-table-body');
+            const paginationContainer = $('#pagination-container');
+
+            // Function to perform search
+            function performSearch(query) {
+                // Show loading indicator
+                searchIcon.addClass('hidden');
+                searchLoading.removeClass('hidden');
+
+                $.ajax({
+                    url: '{{ route('admin.products.search') }}',
+                    type: 'GET',
+                    data: {
+                        search: query
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        // Update table body
+                        tableBody.html(response.html);
+
+                        // Update pagination
+                        paginationContainer.html(response.pagination);
+
+                        // Reinitialize Lucide icons for new content
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Search error:', error);
+                        tableBody.html(
+                            '<tr><td colspan="5" class="text-center py-8 text-error">Error loading results. Please try again.</td></tr>'
+                            );
+                    },
+                    complete: function() {
+                        // Hide loading indicator
+                        searchLoading.addClass('hidden');
+                        searchIcon.removeClass('hidden');
+                    }
+                });
+            }
+
+            // Debounced search on input
+            searchInput.on('input', function() {
+                const query = $(this).val();
+
+                // Clear existing timeout
+                clearTimeout(searchTimeout);
+
+                // Set new timeout for debouncing (300ms delay)
+                searchTimeout = setTimeout(function() {
+                    performSearch(query);
+                }, 300);
+            });
+
+            // Handle pagination clicks
+            $(document).on('click', '#pagination-container a', function(e) {
+                e.preventDefault();
+                const url = $(this).attr('href');
+
+                if (url) {
+                    // Show loading
+                    searchIcon.addClass('hidden');
+                    searchLoading.removeClass('hidden');
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(response) {
+                            tableBody.html(response.html);
+                            paginationContainer.html(response.pagination);
+
+                            // Scroll to top of table
+                            $('html, body').animate({
+                                scrollTop: tableBody.offset().top - 100
+                            }, 300);
+
+                            // Reinitialize Lucide icons
+                            if (typeof lucide !== 'undefined') {
+                                lucide.createIcons();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Pagination error:', error);
+                        },
+                        complete: function() {
+                            searchLoading.addClass('hidden');
+                            searchIcon.removeClass('hidden');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

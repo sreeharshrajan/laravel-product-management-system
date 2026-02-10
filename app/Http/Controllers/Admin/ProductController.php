@@ -36,6 +36,28 @@ class ProductController extends Controller
     }
 
     /**
+     * Handle AJAX search requests
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+        $products = $this->searchService->search($query, 10);
+        
+        // Ensure pagination links carry the search term
+        $products->appends(['search' => $query]);
+
+        // Return HTML for AJAX requests
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.products.partials.table-rows', compact('products'))->render(),
+                'pagination' => view('admin.products.partials.pagination', compact('products'))->render()
+            ]);
+        }
+
+        return view('admin.products.index', compact('products'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

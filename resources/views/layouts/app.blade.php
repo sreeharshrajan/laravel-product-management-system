@@ -29,8 +29,55 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
+        // Initialize theme from localStorage or default to dark
+        const htmlRoot = document.getElementById('html-root');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlRoot.setAttribute('data-theme', savedTheme);
+
+        // Update theme icons
+        function updateThemeIcons(theme) {
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+
+            if (theme === 'light') {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            } else {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            }
+        }
+
+        // Set initial icon state
+        updateThemeIcons(savedTheme);
+
+        // Theme toggle handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const currentTheme = htmlRoot.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                    htmlRoot.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcons(newTheme);
+
+                    // Trigger theme change event for CKEditor
+                    window.dispatchEvent(new CustomEvent('themeChanged', {
+                        detail: {
+                            theme: newTheme
+                        }
+                    }));
+                });
+            }
+        });
+
         lucide.createIcons();
     </script>
+
+    @stack('scripts')
 </body>
 
 </html>

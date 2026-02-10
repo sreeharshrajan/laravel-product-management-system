@@ -55,32 +55,39 @@
             </ul>
         </div>
 
-        <div class="flex items-center gap-3">
-            @if (Auth::check() && !Auth::user()->isAdmin())
-                <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button"
-                        class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
-                        <div class="bg-neutral text-neutral-content rounded-full w-9">
-                            <span class="text-xs font-bold">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</span>
+        <div class="flex justify-between flex-row">
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="btn btn-ghost btn-circle" title="Toggle theme">
+                <i id="theme-icon-light" data-lucide="sun" class="h-5 w-5 hidden"></i>
+                <i id="theme-icon-dark" data-lucide="moon" class="h-5 w-5"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                @if (Auth::check() && !Auth::user()->isAdmin())
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button"
+                            class="btn btn-ghost btn-circle avatar placeholder border border-white/10">
+                            <div class="bg-neutral text-neutral-content rounded-full w-9">
+                                <span class="text-xs font-bold">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</span>
+                            </div>
                         </div>
+                        <ul tabindex="0"
+                            class="mt-3 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-56 border border-white/5">
+                            <li class="px-4 py-3 border-b border-white/5 mb-2 pointer-events-none">
+                                <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
+                            </li>
+                            <li><a href="#">Account Settings</a></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}" class="w-full">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left text-error">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
-                    <ul tabindex="0"
-                        class="mt-3 z-[1] p-2 shadow-2xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-56 border border-white/5">
-                        <li class="px-4 py-3 border-b border-white/5 mb-2 pointer-events-none">
-                            <div class="text-sm font-bold text-primary">{{ Auth::user()->name }}</div>
-                        </li>
-                        <li><a href="#">Account Settings</a></li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}" class="w-full">
-                                @csrf
-                                <button type="submit" class="w-full text-left text-error">Logout</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @else
-                <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
-            @endif
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-ghost btn-sm font-semibold">Sign In</a>
+                @endif
+            </div>
         </div>
     </div>
 </nav>

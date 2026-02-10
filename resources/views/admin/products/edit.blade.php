@@ -8,6 +8,46 @@
             .ck-editor__editable_inline {
                 min-height: 200px;
             }
+
+            /* Light mode styles for CKEditor */
+            [data-theme="light"] .ck.ck-editor__main>.ck-editor__editable {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            }
+
+            [data-theme="light"] .ck.ck-toolbar {
+                background-color: #f3f4f6 !important;
+                border-color: #d1d5db !important;
+            }
+
+            [data-theme="light"] .ck.ck-button,
+            [data-theme="light"] .ck.ck-button__label {
+                color: #374151 !important;
+            }
+
+            [data-theme="light"] .ck.ck-button:hover {
+                background-color: #e5e7eb !important;
+            }
+
+            /* Dark mode styles for CKEditor */
+            [data-theme="dark"] .ck.ck-editor__main>.ck-editor__editable {
+                background-color: #1d232a !important;
+                color: #a6adba !important;
+            }
+
+            [data-theme="dark"] .ck.ck-toolbar {
+                background-color: #191e24 !important;
+                border-color: #2a323c !important;
+            }
+
+            [data-theme="dark"] .ck.ck-button,
+            [data-theme="dark"] .ck.ck-button__label {
+                color: #a6adba !important;
+            }
+
+            [data-theme="dark"] .ck.ck-button:hover {
+                background-color: #2a323c !important;
+            }
         </style>
     @endpush
     <div class="min-w-xl mx-auto">
@@ -56,13 +96,12 @@
 
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-semibold">Status</span></label>
-                        <label
-                            class="cursor-pointer label justify-start gap-4 border border-base-300 rounded-lg p-3 bg-base-100">
+                        <div class="flex items-center justify-between border border-base-300 rounded-lg p-4 bg-base-100">
                             <span class="label-text font-medium">Active Status</span>
                             <input type="hidden" name="is_active" value="0">
-                            <input type="checkbox" name="is_active" class="toggle toggle-primary" value="1"
+                            <input type="checkbox" name="is_active" class="toggle toggle-success" value="1"
                                 {{ old('is_active', $product->is_active) ? 'checked' : '' }} />
-                        </label>
+                        </div>
                     </div>
 
                     <div class="form-control w-full">
@@ -90,8 +129,40 @@
 @push('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
+        let editorInstance;
+
+        // Function to get current theme
+        function getCurrentTheme() {
+            return document.getElementById('html-root').getAttribute('data-theme') || 'dark';
+        }
+
+        // Function to apply theme to CKEditor
+        function applyCKEditorTheme(editor, theme) {
+            const editorElement = editor.ui.view.editable.element;
+
+            if (theme === 'light') {
+                editorElement.style.backgroundColor = '#ffffff';
+                editorElement.style.color = '#000000';
+            } else {
+                editorElement.style.backgroundColor = '#1d232a';
+                editorElement.style.color = '#a6adba';
+            }
+        }
+
+        // Initialize CKEditor
         ClassicEditor
             .create(document.querySelector('#description-editor'))
+            .then(editor => {
+                editorInstance = editor;
+
+                // Apply initial theme
+                applyCKEditorTheme(editor, getCurrentTheme());
+
+                // Listen for theme changes
+                window.addEventListener('themeChanged', function(e) {
+                    applyCKEditorTheme(editor, e.detail.theme);
+                });
+            })
             .catch(error => {
                 console.error(error);
             });

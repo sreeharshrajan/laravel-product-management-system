@@ -3,19 +3,24 @@
 @section('title', 'Products')
 
 @section('content')
-    <div class="mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-            <h1 class="text-3xl font-bold tracking-tight mb-2">Products</h1>
-            <p class="opacity-60">All products</p>
+    <div class="mb-8 w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex-1">
+            <h1 class="text-4xl font-bold tracking-tight text-white">Products</h1>
+            <p class="text-sm opacity-60 mt-1">Showing {{ $products->count() }} products</p>
         </div>
-        <form action="{{ route('products.index') }}" method="GET" class="w-full md:w-auto">
-            <label class="input input-bordered flex items-center gap-2 rounded-xl">
-                <input type="text" name="search" class="grow" placeholder="Search products..."
-                    value="{{ request('search') }}" />
-                <button type="submit">
-                    <i data-lucide="search" class="w-4 h-4 opacity-70"></i>
-                </button>
-            </label>
+
+        <form action="{{ route('web.products.index') }}" method="GET" class="">
+            <div class="form-control w-full">
+                <div
+                    class="input input-bordered bg-[#1a1c23] flex items-center gap-2 rounded-xl focus-within:outline-primary">
+                    <i data-lucide="search" class="w-4 h-4 opacity-50"></i>
+                    <input type="text" name="search" class="grow border-none focus:ring-0"
+                        placeholder="Search products..." value="{{ request('search') }}" />
+                    @if (request('search'))
+                        <a href="{{ route('web.products.index') }}" class="btn btn-ghost btn-xs btn-circle">✕</a>
+                    @endif
+                </div>
+            </div>
         </form>
     </div>
 
@@ -42,7 +47,7 @@
                             {{ $product->title }}
                         </h2>
                         <p class="mt-2 text-sm text-base-content/60 line-clamp-2 leading-relaxed">
-                            {{ $product->description }}
+                            {!! $product->description !!}
                         </p>
                     </div>
 
@@ -61,7 +66,7 @@
                     </div>
 
                     <div class="mt-6">
-                        <a href="{{ route('products.show', $product) }}"
+                        <a href="{{ route('web.products.show', $product) }}"
                             class="relative group/btn overflow-hidden btn btn-primary border-none w-full rounded-xl shadow-md shadow-primary/20">
                             <span class="relative z-10 flex items-center gap-2">
                                 View Details
