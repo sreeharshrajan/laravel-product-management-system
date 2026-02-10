@@ -24,10 +24,10 @@ class AdminMiddleware
             if ($request->expectsJson()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Unauthorized you dont have enough permissions'
+                    'message' => 'Unauthorized you don&apos;t have enough permissions'
                 ], 403);
             }
-            return redirect('/');
+            return redirect('/')->with('error', 'Unauthorized you don\'t have enough permissions');
         }
 
         return $next($request);
